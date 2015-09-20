@@ -1,17 +1,17 @@
 describe('CoreCtrl', function() {
 
-	beforeEach(module('cosmeticoUi'));
+	beforeEach(module('cosmetico'));
 
 	var scope,ctrl;
 
     beforeEach(inject(function($rootScope, $controller) {
       scope = $rootScope.$new();
-      ctrl = $controller('CoreCtrl', {$scope: scope});
+      ctrl = $controller('MainController', {$scope: scope});
     }));	
 
-	it('should ...', inject(function() {
+	it('should scope be defined', inject(function() {
 
-		expect(1).toEqual(1);
+		expect(scope).toBeDefined();
 		
 	}));
 

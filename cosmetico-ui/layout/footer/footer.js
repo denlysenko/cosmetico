@@ -1,4 +1,4 @@
-angular.module('cosmeticoUi').controller('FooterCtrl',function($scope){
+angular.module('cosmetico').controller('FooterCtrl',function($scope){
 
 
 });

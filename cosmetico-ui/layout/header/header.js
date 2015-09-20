@@ -1,4 +1,4 @@
-angular.module('cosmeticoUi').controller('HeaderCtrl',function($scope){
+angular.module('cosmetico').controller('HeaderCtrl',function($scope){
 
 
 });

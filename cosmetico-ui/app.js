@@ -1,23 +1,36 @@
-angular.module('cosmeticoUi', ['ui.bootstrap','ui.utils','ui.router','ngAnimate']);
+(function() {
+	'use strict';
 
-angular.module('cosmeticoUi').config(function($stateProvider, $urlRouterProvider) {
+	angular.module('cosmetico', ['ui.bootstrap','ui.utils','ui.router','ngAnimate']);
 
-    /* Add New States Above */
-    $urlRouterProvider.otherwise('/');
+	// app routing
+	angular.module('cosmetico').config(function($stateProvider, $urlRouterProvider) {
 
-});
+		$stateProvider.state('home', {
+			url: '/',
+			templateUrl: 'core/home.html',
+			controller: 'MainController',
+			controllerAs: 'Main'
+		});
+	  /* Add New States Above */
+	  $urlRouterProvider.otherwise('/');
 
-angular.module('cosmeticoUi').run(function($rootScope) {
+	});
 
-    $rootScope.safeApply = function(fn) {
-        var phase = $rootScope.$$phase;
-        if (phase === '$apply' || phase === '$digest') {
-            if (fn && (typeof(fn) === 'function')) {
-                fn();
-            }
-        } else {
-            this.$apply(fn);
-        }
-    };
+	angular.module('cosmetico').run(function($rootScope) {
 
-});
+	  $rootScope.safeApply = function(fn) {
+	    var phase = $rootScope.$$phase;
+	    if (phase === '$apply' || phase === '$digest') {
+	      if (fn && (typeof(fn) === 'function')) {
+	          fn();
+	      }
+	    } else {
+	      this.$apply(fn);
+	    }
+	  };
+
+	});
+
+})();
+
