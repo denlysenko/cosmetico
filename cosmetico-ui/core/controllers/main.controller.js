@@ -1,19 +1,15 @@
 (function() {
 	'use strict';
 
-
-
 	angular.module('cosmetico')
 			.controller('MainController', MainController);
 
-	MainController.$inject = ['$scope'];
+	MainController.$inject = ['$rootScope'];
 
-	function MainController($scope) {
+	function MainController($rootScope) {
 		var main = this;
-		main.title = 'Home Page';
+		$rootScope.title = 'Home Page';
 	}	
 
-	
-	
 		
 })();

@@ -1,18 +1,23 @@
-describe('CoreCtrl', function() {
+describe('MainController', function() {
 
 	beforeEach(module('cosmetico'));
 
-	var scope,ctrl;
+	var scope,ctrl,rootScope;
 
     beforeEach(inject(function($rootScope, $controller) {
-      scope = $rootScope.$new();
-      ctrl = $controller('MainController', {$scope: scope});
+			rootScope = $rootScope;
+      scope = rootScope.$new();
+      ctrl = $controller('MainController as main', {$scope: scope});
     }));	
 
-	it('should scope be defined', inject(function() {
+	it('should define scope', inject(function() {
 
 		expect(scope).toBeDefined();
 		
 	}));
+
+	it('should set title', function() {
+		expect(rootScope.title).toEqual('Home Page');
+	});
 
 });
