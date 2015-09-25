@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="cosmetico">
+<html ng-app="cosmetico" ng-cloak>
 <head>
   <title>{{title}}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,11 @@
   <link href="app.less" type="text/css" rel="stylesheet/less">
 </head>
 <body>
+
+  <div class="container-fluid">
+    <div ui-view>
+    </div>
+  </div>
 
   <!-- Livereload script for development only (stripped during dist build) -->
   <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
@@ -34,15 +39,10 @@
   <script src="core/controllers/main.controller.js"></script>
   <script src="layout/navigation/controllers/top.nav.controller.js"></script>
   <script src="layout/navigation/controllers/user.nav.controller.js"></script>
+  <script src="layout/navigation/controllers/navbar.controller.js"></script>
   <script src="layout/header/header.js"></script>
   <script src="layout/footer/footer.js"></script>
-  <!-- Add New Component JS Above -->
-
-  
-  <div class="container-fluid">
-    <div ui-view>
-    </div>
-  </div>
+  <!-- Add New Component JS Above -->  
 
 </body>
 </html>

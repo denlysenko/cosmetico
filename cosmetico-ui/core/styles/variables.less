@@ -1,4 +1,5 @@
 @font-family-base: 'ralewayregular', sans-serif;
+@text-color: #000;
 @font-size-h1: 31px;
 @link-color: #000;
 @font-size-base: 13px;
@@ -7,3 +8,29 @@
 @btn-primary-border: transparent;
 @hr-border: #e1e4d9;
 @input-border-focus: lighten(@brand-primary, 15%);
+
+
+@navbar-margin-bottom:             @line-height-computed;
+@navbar-border-radius: 0;
+@navbar-collapse-max-height:       500px;
+@navbar-default-color:             @text-color;
+@navbar-default-bg:                transparent;
+@navbar-default-border: transparent;
+
+// Navbar links
+@navbar-default-link-color:                @text-color;
+@navbar-default-link-hover-color:          #333;
+@navbar-default-link-hover-bg:             #ddd;
+@navbar-default-link-active-color:         #555;
+@navbar-default-link-active-bg:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-link-disabled-color:       #ccc;
+@navbar-default-link-disabled-bg:          transparent;
+
+// Navbar brand label
+@navbar-default-brand-color:               @navbar-default-link-color;
+@navbar-default-brand-hover-color:         darken(@navbar-default-brand-color, 10%);
+@navbar-default-brand-hover-bg:            transparent;
+
+@navbar-default-toggle-hover-bg:           #ddd;
+@navbar-default-toggle-icon-bar-bg:        @brand-primary;
+@navbar-default-toggle-border-color:       @brand-primary;

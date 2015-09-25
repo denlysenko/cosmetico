@@ -1,0 +1,33 @@
+.top-nav {
+	.make-sm-column(3);
+	.make-md-column(4);
+	line-height: 3rem;
+
+	@media(min-width: @screen-md-min) {
+		line-height: 75px;
+	}
+
+	ul {
+		list-style: none;
+		.clearfix();
+		margin: 0;
+		padding: 0;
+
+		li {
+
+			@media(min-width: @screen-md-min) {
+				float: left;
+
+				&:after {
+				content: '/';
+				color: #d5d5d5;
+				margin: 0 .9rem;
+			}
+
+				&:last-child:after {
+					display: none;
+				}
+			}
+		}
+	}
+}
