@@ -10,10 +10,16 @@
   <link href="app.less" type="text/css" rel="stylesheet/less">
 </head>
 <body>
-
   <div class="container-fluid">
+    <div  class="container" ng-include="'../layout/header/header.html'"></div>
+    <hr>
+    <div class="container" ng-include="'../layout/navigation/views/navbar.html'"></div>
     <div ui-view>
     </div>
+    <div class="subscription" ng-include="'../layout/subscription/subscription.html'"></div>
+    <div class="container" ng-include="'../layout/navigation/views/bottom-nav.html'"></div>
+    <hr>
+    <div class="container" ng-include="'../layout/footer/footer.html'"></div>
   </div>
 
   <!-- Livereload script for development only (stripped during dist build) -->
@@ -42,7 +48,7 @@
   <script src="layout/navigation/controllers/navbar.controller.js"></script>
   <script src="layout/header/header.js"></script>
   <script src="layout/footer/footer.js"></script>
+  <script src="layout/subscription/subscription.js"></script>
   <!-- Add New Component JS Above -->  
-
 </body>
 </html>
