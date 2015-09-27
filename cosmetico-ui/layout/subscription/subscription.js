@@ -8,7 +8,7 @@
 		var subscription = this;
 		subscription.email = '';
 		subscription.subscribe = function() {
-			console.log(subscription.email)
+			console.log(subscription.email);
 		};
 	}		
 
