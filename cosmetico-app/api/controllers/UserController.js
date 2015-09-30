@@ -19,7 +19,7 @@ module.exports = {
 			res.json(user);
 
 			//creating verification url
-			user.url = req.protocol + '://' + req.get('host') + req.originalUrl + '/verify/' + user.token;
+			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/verify/' + user.token;
 
 			sails.hooks.views.render('emails/verification', {layout: false, user: user}, function(err, html) {
 	       if(err) return next(err);
@@ -48,6 +48,7 @@ module.exports = {
 				user.confirmed = true;
 				user.save(function(err, user) {
 					if(err) return res.json(err);
+					req.session.user = user;
 					res.json(user)
 				});
 				
@@ -57,7 +58,7 @@ module.exports = {
 
 		      var mailOptions = {
 		       	to: user.email,
-		       	subject: 'Please, verify your email',
+		       	subject: 'Thanks for verification of email',
 		       	template: html
 		      };
 		      
@@ -65,6 +66,21 @@ module.exports = {
 					//EmailService.send(mailOptions);	     
 		    });
 			}
+		});
+	},
+
+	login: function(req, res) {
+		User.findOneByEmail(req.param('email'), function(err, user) {
+			if(err) return res.json(err);
+			if(!user) return res.status(404).json({message: 'User Not Found!'});
+			require('bcrypt').compare(req.param('password'), user.encryptedPassword, function(err, valid) {
+				if(err) return serverError();
+				if(!valid) {
+					res.json({message: 'Incorrect password'})
+				}
+				req.session.user = user;
+				res.json(user);
+			});
 		});
 	}
 

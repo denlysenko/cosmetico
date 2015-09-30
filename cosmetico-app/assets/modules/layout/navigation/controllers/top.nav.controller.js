@@ -4,12 +4,14 @@
 	angular.module('cosmetico')
 			.controller('TopNavController', TopNavController);
 
-	TopNavController.$inject = ['$modal'];		
+	TopNavController.$inject = ['$modal', 'Authentication'];		
 
-	function TopNavController($modal) {
+	function TopNavController($modal, Authentication) {
 		var topNav = this,
 				modal;
 		
+		topNav.user = Authentication.user;
+
 		topNav.showLoginForm = function() {
 			modal = $modal.open({
 	      templateUrl: '../../../modules/user/views/login.html',

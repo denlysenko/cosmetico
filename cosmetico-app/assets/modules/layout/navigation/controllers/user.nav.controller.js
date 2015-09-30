@@ -4,10 +4,12 @@
 	angular.module('cosmetico')
 			.controller('UserNavController', UserNavController);
 
-		//UserNavController.$inject = ['$scope'];
+		UserNavController.$inject = ['Authentication'];
 
-		function UserNavController() {
+		function UserNavController(Authentication) {
 			var userNav = this;
+
+			userNav.user = Authentication.user;
 
 			userNav.currencies = [
 				{name: 'USD'},
@@ -15,8 +17,6 @@
 			];
 
 			userNav.currency = userNav.currencies[0];
-
-			userNav.user = {};
 
 			userNav.template = 'cart.preview.html';
 

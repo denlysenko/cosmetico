@@ -15,7 +15,6 @@
 				})
 				.state('verification', {
 					url: '/user/verify/:token',
-					templateUrl: 'modules/core/home.html',
 					controller: 'VerificationController'
 				});
 	  /* Add New States Above */

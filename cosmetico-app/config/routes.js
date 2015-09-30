@@ -40,7 +40,9 @@ module.exports.routes = {
   'post /user': 'UserController.create',
 
   // verification of email
-  'get /user/verify/:token': 'UserController.verify'
+  'get /user/verify/:token': 'UserController.verify',
+
+  'post /user/login': 'UserController.login'
 
   /***************************************************************************
   *                                                                          *

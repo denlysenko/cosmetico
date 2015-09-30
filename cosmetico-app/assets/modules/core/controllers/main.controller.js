@@ -4,11 +4,12 @@
 	angular.module('cosmetico')
 			.controller('MainController', MainController);
 
-	MainController.$inject = ['$rootScope'];
+	MainController.$inject = ['$rootScope', 'Authentication'];
 
-	function MainController($rootScope) {
+	function MainController($rootScope, Authentication) {
 		var main = this;
 		$rootScope.title = 'Home Page';
+		main.user = Authentication;
 	}	
 
 		
