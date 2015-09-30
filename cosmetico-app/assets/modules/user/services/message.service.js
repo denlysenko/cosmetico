@@ -9,7 +9,7 @@
 	function message($modal) {
 		return function(user) {
 			$modal.open({
-				templateUrl: '../../../layout/navigation/views/message.html',
+				templateUrl: '../../../modules/user/views/message.html',
 				controller: function($modalInstance) {
 					this.user = user;
 					this.cancel = function() {

@@ -3,21 +3,24 @@
   <h3 class="modal-title">Register</h3>
 </div>
 <div class="modal-body">
-  <form id="registerForm" name="registerForm" ng-submit="registerForm.$valid && register.submit()" novalidate>
+  <form id="registerForm" name="registerForm" ng-submit="registerForm.$valid && register.submit(registerForm)" novalidate>
     <div class="form-group">
       <label for="firstName">First Name</label>
       <p class="text-danger" ng-show="(registerForm.firstName.$dirty || registerForm.$submitted) && registerForm.firstName.$error.required">First Name is Required!</p>
+      <p class="text-danger" ng-show="registerForm.firstName.$error.serverError" ng-repeat="error in register.serverErrors.firstName">{{error.message}}</p>
       <input id="firstName" type="text" placeholder="Enter Your First Name" class="form-control" name="firstName" ng-model="register.credentials.firstName" required>
     </div>
     <div class="form-group">
       <label for="lastName">Last Name</label>
       <p class="text-danger" ng-show="(registerForm.lastName.$dirty || registerForm.$submitted) && registerForm.lastName.$error.required">Last Name is Required!</p>
+      <p class="text-danger" ng-show="registerForm.lastName.$error.serverError" ng-repeat="error in register.serverErrors.lastName">{{error.message}}</p>
       <input id="lastName" type="text" placeholder="Enter Your Last Name" class="form-control" name="lastName" ng-model="register.credentials.lastName" required>
     </div>
     <div class="form-group">
       <label for="email">Email</label>
       <p class="text-danger" ng-show="(registerForm.email.$dirty || registerForm.$submitted) && registerForm.email.$error.required">Email is Required!</p>
       <p class="text-danger" ng-show="(registerForm.email.$dirty || registerForm.$submitted) && registerForm.email.$error.email">Please, enter valid email!</p>
+      <p class="text-danger" ng-show="registerForm.email.$error.serverError" ng-repeat="error in register.serverErrors.email">{{error.message}}</p>
       <input id="email" type="email" placeholder="Enter Your Email" class="form-control" name="email" ng-model="register.credentials.email" required>
     </div>
     <div class="form-group">

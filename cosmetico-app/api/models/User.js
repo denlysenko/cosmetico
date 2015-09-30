@@ -49,8 +49,34 @@ module.exports = {
   	confirmed: {
   		type: 'boolean',
   		defaultsTo: false
-  	}
+  	},
+
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.encryptedPassword;
+      delete obj.token;
+      return obj;
+    }
   },
+  // requires sails-hooks-validation
+  validationMessages: {
+
+    firstName: {
+      required:'First Name is required'
+    },
+
+     lastName: {
+      required:'Last Name is required'
+    },
+
+    email: {
+      type : 'Please, enter valid email address',
+      required: 'Email is required',
+      unique: 'Email address is already in use'
+    },
+
+  },
+
 
 	beforeCreate: function(values, next) {
 

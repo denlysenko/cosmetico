@@ -1,7 +1,7 @@
 (function() {
 	'use strict';
 
-	angular.module('cosmetico', ['ui.bootstrap','ui.utils','ui.router','ngAnimate']);
+	angular.module('cosmetico', ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'restangular']);
 
 	// app routing
 	angular.module('cosmetico').config(function($stateProvider, $urlRouterProvider) {
@@ -12,6 +12,11 @@
 					templateUrl: 'modules/core/home.html',
 					controller: 'MainController',
 					controllerAs: 'Main'
+				})
+				.state('verification', {
+					url: '/user/verify/:token',
+					templateUrl: 'modules/core/home.html',
+					controller: 'VerificationController'
 				});
 	  /* Add New States Above */
 	  $urlRouterProvider.otherwise('/');

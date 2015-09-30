@@ -36,7 +36,11 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'post /user/create': 'UserController.create',
+  // registration of new user
+  'post /user': 'UserController.create',
+
+  // verification of email
+  'get /user/verify/:token': 'UserController.verify'
 
   /***************************************************************************
   *                                                                          *

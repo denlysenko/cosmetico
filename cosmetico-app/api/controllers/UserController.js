@@ -10,36 +10,61 @@
 module.exports = {
 
 	create: function(req, res, next) {
-		var user = _.clone(req.params.all());
-
-		User.create(user, function(err, user) {
+		
+		User.create(req.params.all(), function(err, user) {
 			if(err) {
 				return res.json(err);
 			}
 
-			// sending back to the client only needed fields without secret information
-			var userObj = {
-				firstName: user.firstName, 
-				email: user.email
-			};
+			res.json(user);
 
-			res.json(userObj);
-			// adding verification link
-			userObj.url = req.protocol + '://' + req.get('host') + req.originalUrl + '/verify/' + user.token;
+			//creating verification url
+			user.url = req.protocol + '://' + req.get('host') + req.originalUrl + '/verify/' + user.token;
 
-			sails.hooks.views.render('emails/verification', {layout: false, user: userObj}, function(err, html) {
-	      if(err) return next(err);
+			sails.hooks.views.render('emails/verification', {layout: false, user: user}, function(err, html) {
+	       if(err) return next(err);
 
 	      var mailOptions = {
-	      	to: user.email,
-	      	subject: 'Please, verify your email',
-	      	template: html
+	       	to: user.email,
+	       	subject: 'Please, verify your email',
+	       	template: html
 	      };
 	      
 				// sending email to verify indicated in registration form
 				EmailService.send(mailOptions);	     
 	    });
 			
+		});
+	},
+
+	verify: function(req, res) {
+		User.findOneByToken(req.param('token'), function(err, user) {
+
+			if(err) {
+				return res.json(err);
+			}
+
+			if(user) {
+				user.confirmed = true;
+				user.save(function(err, user) {
+					if(err) return res.json(err);
+					res.json(user)
+				});
+				
+
+				sails.hooks.views.render('emails/verification', {layout: false, user: user}, function(err, html) {
+	       if(err) return next(err);
+
+		      var mailOptions = {
+		       	to: user.email,
+		       	subject: 'Please, verify your email',
+		       	template: html
+		      };
+		      
+					// sending email to verify indicated in registration form
+					//EmailService.send(mailOptions);	     
+		    });
+			}
 		});
 	}
 
