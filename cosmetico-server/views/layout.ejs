@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="cosmetico" ng-cloak>
   <head>
-    <title>New Sails App</title>
+    <title>{{title}}</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8">
 
     
     <!--  
@@ -28,8 +29,9 @@
             + Use a different or additional preprocessor, like SASS, SCSS or Stylus
     -->
 
+    <!-- <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css"> -->
     <!--STYLES-->
-    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/app.css">
     <!--STYLES END-->
   </head>
 
@@ -90,5 +92,32 @@
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
+    <!-- JS from Bower Components -->
+    <!--<script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script> -->
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+    <!-- Add New Bower Component JS Above -->
+
+
+    <!-- Main App JS -->
+    <script src="app.js"></script>
+    <script src="modules/core/controllers/main.controller.js"></script>
+    <script src="modules/layout/header/header.js"></script>
+    <script src="modules/layout/navigation/controllers/top.nav.controller.js"></script>
+    <script src="modules/user/controllers/login.controller.js"></script>
+    <script src="modules/user/controllers/register.controller.js"></script>
+    <script src="modules/user/services/message.service.js"></script>
+    <script src="modules/layout/navigation/controllers/contact.controller.js"></script>
+    <script src="modules/layout/navigation/controllers/user.nav.controller.js"></script>
+    <script src="modules/layout/navigation/controllers/navbar.controller.js"></script>
+    <script src="modules/layout/subscription/subscription.js"></script>
+    <script src="modules/layout/footer/footer.js"></script>
   </body>
 </html>

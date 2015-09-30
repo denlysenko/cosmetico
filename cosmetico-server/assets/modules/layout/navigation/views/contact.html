@@ -1,0 +1,32 @@
+
+<div class="modal-header">
+  <h3 class="modal-title">Contact Us</h3>
+</div>
+<div class="modal-body">
+  <form id="contactForm" name="contactForm" ng-submit="contactForm.$valid && contact.submit()" novalidate>
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <p class="text-danger" ng-show="(contactForm.firstName.$dirty || contactForm.$submitted) && contactForm.firstName.$error.required">First Name is Required!</p>
+      <input id="firstName" type="text" placeholder="Enter Your First Name" class="form-control" name="firstName" ng-model="contact.credentials.firstName" required>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <p class="text-danger" ng-show="(contactForm.lastName.$dirty || contactForm.$submitted) && contactForm.lastName.$error.required">Last Name is Required!</p>
+      <input id="lastName" type="text" placeholder="Enter Your Last Name" class="form-control" name="lastName" ng-model="contact.credentials.lastName" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <p class="text-danger" ng-show="(contactForm.email.$dirty || contactForm.$submitted) && contactForm.email.$error.required">Email is Required!</p>
+      <p class="text-danger" ng-show="(contactForm.email.$dirty || contactForm.$submitted) && contactForm.email.$error.email">Please, enter valid email!</p>
+      <input id="email" type="email" placeholder="Enter Your Email" class="form-control" name="email" ng-model="contact.credentials.email" required>
+    </div>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea name="message" id="message" cols="30" rows="10" placeholder="Enter Your Message" ng-model="contact.credentials.message" class="form-control"></textarea>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" form="contactForm" type="submit">Send Message</button>
+  <button class="btn btn-warning" type="button" ng-click="contact.cancel()">Cancel</button>
+</div>
