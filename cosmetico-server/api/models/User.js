@@ -5,6 +5,8 @@
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
+'use strict';
+
 module.exports = {
 
 	schema: true,
@@ -47,18 +49,36 @@ module.exports = {
   	confirmed: {
   		type: 'boolean',
   		defaultsTo: false
-  	},
-
-  	beforeCreate: function(values, next) {
-  		if(!values || !(values.password === values.confirm)) {
-  			return next({message: 'Password doesn\'t match confirmation!'});
-  		}
-
-  		require('bcrypt').hash(values.password, 12, function(err, encryptedPassword) {
-  			if(err) return next(err);
-  			values.encryptedPassword = encryptedPassword;
-  		});
   	}
-  }
+  },
+
+	beforeCreate: function(values, next) {
+
+		async.series([
+			// generating encryptedPassword
+			function(done) {
+				if(!values || !(values.password === values.confirm)) {
+	  			return done({message: 'Password doesn\'t match confirmation!'});
+	  		}
+
+	  		require('bcrypt').hash(values.password, 12, function(err, encryptedPassword) {
+	  			if(err) return done(err);
+	  			values.encryptedPassword = encryptedPassword;
+	  			done();
+  			});
+  		},
+  		// generating token for verification and restoring password
+  		function(done) {
+  			require('crypto').randomBytes(48, function(err, buf) {
+					if(err) return done(err);
+				  values.token = buf.toString('base64').replace(/\//g,'_').replace(/\+/g,'-');
+					done();
+				});
+  		}
+		], function(err) {
+			if(err) return next(err);
+			next();
+		});
+	}
 };
 

@@ -11,15 +11,15 @@
 </head>
 <body>
   <div class="container-fluid">
-    <div  class="container" ng-include="'../layout/header/header.html'"></div>
+    <div  class="container" ng-include="'../modules/layout/header/header.html'"></div>
     <hr>
-    <div class="container" ng-include="'../layout/navigation/views/navbar.html'"></div>
+    <div class="container" ng-include="'../modules/layout/navigation/views/navbar.html'"></div>
     <div ui-view>
     </div>
-    <div class="subscription" ng-include="'../layout/subscription/subscription.html'"></div>
-    <div class="container" ng-include="'../layout/navigation/views/bottom-nav.html'"></div>
+    <div class="subscription" ng-include="'../modules/layout/subscription/subscription.html'"></div>
+    <div class="container" ng-include="'../modules/layout/navigation/views/bottom-nav.html'"></div>
     <hr>
-    <div class="container" ng-include="'../layout/footer/footer.html'"></div>
+    <div class="container" ng-include="'../modules/layout/footer/footer.html'"></div>
   </div>
 
   <!-- Livereload script for development only (stripped during dist build) -->
@@ -42,17 +42,17 @@
 
   <!-- Main App JS -->
   <script src="app.js"></script>
-  <script src="core/controllers/main.controller.js"></script>
-  <script src="layout/header/header.js"></script>
-  <script src="layout/navigation/controllers/top.nav.controller.js"></script>
-  <script src="layout/navigation/controllers/login.controller.js"></script>
-  <script src="layout/navigation/controllers/register.controller.js"></script>
-  <script src="layout/navigation/services/message.service.js"></script>
-  <script src="layout/navigation/controllers/contact.controller.js"></script>
-  <script src="layout/navigation/controllers/user.nav.controller.js"></script>
-  <script src="layout/navigation/controllers/navbar.controller.js"></script>
-  <script src="layout/subscription/subscription.js"></script>
-  <script src="layout/footer/footer.js"></script>
+  <script src="modules/core/controllers/main.controller.js"></script>
+  <script src="modules/layout/header/header.js"></script>
+  <script src="modules/layout/navigation/controllers/top.nav.controller.js"></script>
+  <script src="modules/user/controllers/login.controller.js"></script>
+  <script src="modules/user/controllers/register.controller.js"></script>
+  <script src="modules/user/services/message.service.js"></script>
+  <script src="modules/layout/navigation/controllers/contact.controller.js"></script>
+  <script src="modules/layout/navigation/controllers/user.nav.controller.js"></script>
+  <script src="modules/layout/navigation/controllers/navbar.controller.js"></script>
+  <script src="modules/layout/subscription/subscription.js"></script>
+  <script src="modules/layout/footer/footer.js"></script>
   
   
   <!-- Add New Component JS Above -->  

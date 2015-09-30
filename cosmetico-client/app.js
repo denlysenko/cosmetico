@@ -6,12 +6,13 @@
 	// app routing
 	angular.module('cosmetico').config(function($stateProvider, $urlRouterProvider) {
 
-		$stateProvider.state('home', {
-			url: '/',
-			templateUrl: 'core/home.html',
-			controller: 'MainController',
-			controllerAs: 'Main'
-		});
+		$stateProvider
+				.state('home', {
+					url: '/',
+					templateUrl: 'modules/core/home.html',
+					controller: 'MainController',
+					controllerAs: 'Main'
+				});
 	  /* Add New States Above */
 	  $urlRouterProvider.otherwise('/');
 
