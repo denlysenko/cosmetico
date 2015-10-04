@@ -32,17 +32,24 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
-    view: 'homepage'
+  '/': function(req, res) {
+    var session = _.clone(req.session);
+    delete session.cookie;
+    res.view('homepage', {
+        session: session || null
+      }
+    );
   },
 
   // registration of new user
-  'post /user': 'UserController.create',
+  'post /user': 'UserController.signup',
 
   // verification of email
   'get /user/verify/:token': 'UserController.verify',
 
-  'post /user/login': 'UserController.login'
+  'post /user/signin': 'UserController.signin',
+
+  'get /user/signout': 'UserController.signout'
 
   /***************************************************************************
   *                                                                          *

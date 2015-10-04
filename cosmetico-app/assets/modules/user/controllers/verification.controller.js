@@ -4,20 +4,15 @@
 	angular.module('cosmetico')
 			.controller('VerificationController', VerificationController);
 
-	VerificationController.$inject = ['$stateParams', 'UserService', '$location', 'Authentication'];
+	VerificationController.$inject = ['$stateParams', 'UserService'];
 	
-	function VerificationController($stateParams, UserService, $location, Authentication) {
-		console.log($stateParams.token)
+	function VerificationController($stateParams, UserService) {
 		UserService.one('verify', $stateParams.token)
 				.get()
-				.then(function(user) {
-					if(user) {
-						Authentication = user;
-						$location.path('/');
-					} else {
+				.then(function() {
+					location.href = '/';
+				}, function(error) {
 
-					}
-					
-				}, function(error) {});
+				});
 	}		
 })();

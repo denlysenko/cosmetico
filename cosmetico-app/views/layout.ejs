@@ -106,6 +106,10 @@
     <script src="bower_components/restangular/dist/restangular.min.js"></script>
     <!-- Add New Bower Component JS Above -->
 
+    <!--Embedding The User Object-->
+    <script>
+      var session = <%- JSON.stringify(session) %>;
+    </script>
 
     <!-- Main App JS -->
     <script src="app.js"></script>
@@ -114,9 +118,8 @@
     <script src="modules/layout/header/header.js"></script>
     <script src="modules/layout/navigation/controllers/top.nav.controller.js"></script>
     <script src="modules/user/services/user.service.js"></script>
-    <script src="modules/user/services/authentication.service.js"></script>
-    <script src="modules/user/controllers/login.controller.js"></script>
-    <script src="modules/user/controllers/register.controller.js"></script>
+    <script src="modules/core/services/session.service.js"></script>
+    <script src="modules/user/controllers/authentication.controller.js"></script>
     <script src="modules/user/controllers/verification.controller.js"></script>
     <script src="modules/user/services/message.service.js"></script>
     <script src="modules/layout/navigation/controllers/contact.controller.js"></script>
@@ -124,5 +127,6 @@
     <script src="modules/layout/navigation/controllers/navbar.controller.js"></script>
     <script src="modules/layout/subscription/subscription.js"></script>
     <script src="modules/layout/footer/footer.js"></script>
+    
   </body>
 </html>

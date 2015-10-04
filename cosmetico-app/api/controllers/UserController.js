@@ -9,11 +9,11 @@
 
 module.exports = {
 
-	create: function(req, res, next) {
+	signup: function(req, res, next) {
 		
 		User.create(req.params.all(), function(err, user) {
 			if(err) {
-				return res.json(err);
+				return res.serverError();
 			}
 
 			res.json(user);
@@ -37,23 +37,23 @@ module.exports = {
 		});
 	},
 
-	verify: function(req, res) {
+	verify: function(req, res, next) {
 		User.findOneByToken(req.param('token'), function(err, user) {
 
 			if(err) {
-				return res.json(err);
+				return res.serverError();
 			}
 
 			if(user) {
 				user.confirmed = true;
 				user.save(function(err, user) {
-					if(err) return res.json(err);
+					if(err) return res.serverError();
 					req.session.user = user;
-					res.json(user)
+					res.ok();
 				});
 				
 
-				sails.hooks.views.render('emails/verification', {layout: false, user: user}, function(err, html) {
+				sails.hooks.views.render('emails/success.verification', {layout: false, user: user}, function(err, html) {
 	       if(err) return next(err);
 
 		      var mailOptions = {
@@ -63,27 +63,32 @@ module.exports = {
 		      };
 		      
 					// sending email to verify indicated in registration form
-					//EmailService.send(mailOptions);	     
+					EmailService.send(mailOptions);	     
 		    });
+			} else {
+				res.status(404).json({message: 'Page Not Found!'})
 			}
 		});
 	},
 
-	login: function(req, res) {
+	signin: function(req, res) {
 		User.findOneByEmail(req.param('email'), function(err, user) {
 			if(err) return res.json(err);
 			if(!user) return res.status(404).json({message: 'User Not Found!'});
 			require('bcrypt').compare(req.param('password'), user.encryptedPassword, function(err, valid) {
-				if(err) return serverError();
+				if(err) return res.serverError();
 				if(!valid) {
 					res.json({message: 'Incorrect password'})
 				}
 				req.session.user = user;
-				res.json(user);
+				res.ok();
 			});
 		});
+	},
+
+	signout: function(req, res) {
+		req.session.destroy();
+		res.redirect('/');
 	}
 
 };
-
-// http://localhost:1337/user/create/verify/Y7MiUlpPRJ6OGbpguX17ZPUtHLeuidU9pwTgj8H_cOFpKwnQ_G9jmlDoHGRsX5N3

@@ -4,12 +4,12 @@
 	angular.module('cosmetico')
 			.controller('UserNavController', UserNavController);
 
-		UserNavController.$inject = ['Authentication'];
+		UserNavController.$inject = ['SessionService'];
 
-		function UserNavController(Authentication) {
+		function UserNavController(SessionService) {
 			var userNav = this;
 
-			userNav.user = Authentication.user;
+			userNav.user = SessionService.user;
 
 			userNav.currencies = [
 				{name: 'USD'},
