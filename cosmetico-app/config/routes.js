@@ -49,7 +49,11 @@ module.exports.routes = {
 
   'post /user/signin': 'UserController.signin',
 
-  'get /user/signout': 'UserController.signout'
+  'get /user/signout': 'UserController.signout',
+
+  'post /user/forgot': 'UserController.forgot',
+
+  'get /user/reset/:token': 'UserController.validateToken'
 
   /***************************************************************************
   *                                                                          *

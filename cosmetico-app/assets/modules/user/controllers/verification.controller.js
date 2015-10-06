@@ -4,10 +4,10 @@
 	angular.module('cosmetico')
 			.controller('VerificationController', VerificationController);
 
-	VerificationController.$inject = ['$stateParams', 'UserService'];
+	VerificationController.$inject = ['$stateParams', 'UserRestService'];
 	
-	function VerificationController($stateParams, UserService) {
-		UserService.one('verify', $stateParams.token)
+	function VerificationController($stateParams, UserRestService) {
+		UserRestService.one('verify', $stateParams.token)
 				.get()
 				.then(function() {
 					location.href = '/';

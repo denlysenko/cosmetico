@@ -1,0 +1,17 @@
+<div class="modal-header">
+  <h3 class="modal-title">Reset Password</h3>
+</div>
+<div class="modal-body">
+  <form id="resetPasswordForm" name="resetPasswordForm" ng-submit="resetPasswordForm.$valid && auth.forgot()" novalidate>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <p class="text-danger" ng-show="(resetPasswordForm.email.$dirty || resetPasswordForm.$submitted) && resetPasswordForm.email.$error.required">Email is Required!</p>
+      <p class="text-danger" ng-show="(resetPasswordForm.email.$dirty || resetPasswordForm.$submitted) && resetPasswordForm.email.$error.email">Please, enter valid email!</p>
+      <input id="email" type="email" placeholder="Enter Your Email" class="form-control" name="email" ng-model="auth.credentials.email" required>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" form="resetPasswordForm" type="submit">Reset Password</button>
+  <button class="btn btn-warning" type="button" ng-click="auth.cancel()">Cancel</button>
+</div>

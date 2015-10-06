@@ -89,6 +89,37 @@ module.exports = {
 	signout: function(req, res) {
 		req.session.destroy();
 		res.redirect('/');
+	},
+
+	forgot: function(req, res, next) {
+		User.findOneByEmail(req.param('email'), function(err, user) {
+			if(err) return res.serverError();
+			if(!user) return res.status(404).json({message: err.message});
+			res.json(user);
+			//creating verification url
+			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/reset/' + user.token;
+
+			sails.hooks.views.render('emails/reset', {layout: false, user: user}, function(err, html) {
+	       if(err) return next(err);
+
+	      var mailOptions = {
+	       	to: user.email,
+	       	subject: 'Please, verify your email',
+	       	template: html
+	      };
+	      
+				// sending email to verify indicated in registration form
+				EmailService.send(mailOptions);	     
+	    });
+		});
+	},
+
+	validateToken: function(req, res) {
+		User.findOneByToken(req.param('token'), function(err, user) {
+			if(err) return res.serverError();
+			if(!user) return res.status(404).json({message: 'User Not Found!'});
+			res.json(user);
+		});
 	}
 
 };

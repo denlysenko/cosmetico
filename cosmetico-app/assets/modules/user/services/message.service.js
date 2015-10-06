@@ -7,9 +7,9 @@
 	message.$inject = ['$modal'];
 	
 	function message($modal) {
-		return function(user) {
+		return function(user, view) {
 			$modal.open({
-				templateUrl: '../../../modules/user/views/message.html',
+				templateUrl: '../../../modules/user/views/' + view + '.html',
 				controller: function($modalInstance) {
 					this.user = user;
 					this.cancel = function() {

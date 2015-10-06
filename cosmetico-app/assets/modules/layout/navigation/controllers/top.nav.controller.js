@@ -37,6 +37,6 @@
 	      controller: 'ContactController',
 	      controllerAs: 'contact'
 			});
-		};
+		};		
 	}	
 })();

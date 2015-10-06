@@ -16,6 +16,10 @@
 				.state('verification', {
 					url: '/user/verify/:token',
 					controller: 'VerificationController'
+				})
+				.state('restoring', {
+					url: '/user/forgot/reset/:token',
+					controller: 'RestoreController'
 				});
 	  /* Add New States Above */
 	  $urlRouterProvider.otherwise('/');
