@@ -13,12 +13,16 @@
 		UserRestService.one('reset', $stateParams.token)
 				.get()
 				.then(function(user) {
-					restore.user = user;
 					$modal.open({
 						templateUrl: '../../../modules/user/views/new.password.html',
 						controller: 'NewPasswordController',
-						controllerAs: 'newPassword'
-					})
+						controllerAs: 'newPassword',
+						resolve: {
+							email: function() {
+								return user.email
+							}
+						}
+					});
 				}, function() {});
 	}		
 })();

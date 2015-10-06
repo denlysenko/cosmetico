@@ -120,6 +120,19 @@ module.exports = {
 			if(!user) return res.status(404).json({message: 'User Not Found!'});
 			res.json(user);
 		});
+	},
+
+	savePassword: function(req, res) {
+		if(req.param('password').length < 6 && req.param('password') !== req.param('confirm')) {
+			return res.status(400).json({message: 'Password is to small or Password doesn\'t match confirmation'});
+		}
+		
+		User.findOneByEmail(req.param('email'), function(err, user) {
+			if(err) return res.serverError();
+			if(!user) return res.status(404).json({message: 'User Not Found!'});
+			req.session.user = user;
+			res.ok();
+		});
 	}
 
 };

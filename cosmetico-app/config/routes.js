@@ -53,7 +53,9 @@ module.exports.routes = {
 
   'post /user/forgot': 'UserController.forgot',
 
-  'get /user/reset/:token': 'UserController.validateToken'
+  'get /user/reset/:token': 'UserController.validateToken',
+
+  'post /user/save_password': 'UserController.savePassword'
 
   /***************************************************************************
   *                                                                          *

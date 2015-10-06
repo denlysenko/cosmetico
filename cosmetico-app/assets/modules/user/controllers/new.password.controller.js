@@ -4,15 +4,19 @@
 	angular.module('cosmetico')
 			.controller('NewPasswordController', NewPasswordController);
 
-	
+	NewPasswordController.$inject = ['UserRestService', 'email'];
 
-	function NewPasswordController() {
+	function NewPasswordController(UserRestService, email) {
 		var newPassword = this;
 		newPassword.credentials = {};
-		console.log(newPassword)
+		newPassword.credentials.email = email;
 
 		newPassword.save = function() {
-			console.log(newPassword.credentials)
+			UserRestService.one('save_password')
+					.post('', newPassword.credentials)
+					.then(function() {
+						location.href = '/';
+					}, function() {});
 		};
 	}		
 })();
