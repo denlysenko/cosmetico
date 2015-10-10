@@ -5,6 +5,7 @@
   "description": "e-commerce app on Sails.js",
   "keywords": [],
   "dependencies": {
+    "agenda": "^0.6.28",
     "bcrypt": "^0.8.5",
     "ejs": "~0.8.4",
     "grunt": "0.4.2",

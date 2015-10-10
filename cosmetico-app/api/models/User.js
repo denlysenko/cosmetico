@@ -41,6 +41,10 @@ module.exports = {
   		type: 'string'
   	},
 
+    tokenExpires: {
+      type: 'date'
+    },
+
   	admin: {
   		type: 'boolean',
   		defaultsTo: false
@@ -93,11 +97,12 @@ module.exports = {
 	  			done();
   			});
   		},
-  		// generating token for verification and restoring password
+  		// generating token for verification password
   		function(done) {
   			require('crypto').randomBytes(48, function(err, buf) {
 					if(err) return done(err);
 				  values.token = buf.toString('base64').replace(/\//g,'_').replace(/\+/g,'-');
+          values.tokenExpires = Date.now() + 3600000; // + 1 hour
 					done();
 				});
   		}

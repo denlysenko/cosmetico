@@ -1,5 +1,6 @@
 <div class="top-nav" ng-controller="TopNavController as topNav">
 	<ul>
+		<li ng-if="topNav.user">Welcome, {{topNav.user.firstName}}</li>
 		<li><a href="">Checkout</a></li>
 		<li ng-if="!topNav.user"><a href="" ng-click="topNav.showLoginForm()">Log in</a></li>
 		<li ng-if="topNav.user"><a href="/user/signout">Log out</a></li>

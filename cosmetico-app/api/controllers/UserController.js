@@ -38,7 +38,10 @@ module.exports = {
 	},
 
 	verify: function(req, res, next) {
-		User.findOneByToken(req.param('token'), function(err, user) {
+		User.findOne({
+			token: req.param('token'), 
+			tokenExpires: {$gt: Date.now()}
+		}, function(err, user) {
 
 			if(err) {
 				return res.serverError();
@@ -46,6 +49,10 @@ module.exports = {
 
 			if(user) {
 				user.confirmed = true;
+				// reset tokens
+				user.token = null;
+				user.tokenExpires = null;
+
 				user.save(function(err, user) {
 					if(err) return res.serverError();
 					req.session.user = user;
@@ -92,9 +99,24 @@ module.exports = {
 	},
 
 	forgot: function(req, res, next) {
-		User.findOneByEmail(req.param('email'), function(err, user) {
+		async.waterfall([
+			function(done) {
+				User.findOneByEmail(req.param('email'), function(err, user) {
+					if(err) return done(err);
+					if(!user) return done({message: 'User Not Found!'});
+					done(null, user);
+				});
+			},
+			function(user, done) {
+				require('crypto').randomBytes(48, function(err, buf) {
+					if(err) return done(err);
+				  user.token = buf.toString('base64').replace(/\//g,'_').replace(/\+/g,'-');
+          user.tokenExpires = Date.now() + 600000; // + 1 hour
+					done(null, user);
+				});
+			}
+		], function(err, user) {
 			if(err) return res.serverError();
-			if(!user) return res.status(404).json({message: err.message});
 			res.json(user);
 			//creating verification url
 			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/reset/' + user.token;
@@ -109,15 +131,33 @@ module.exports = {
 	      };
 	      
 				// sending email to verify indicated in registration form
-				EmailService.send(mailOptions);	     
-	    });
+				EmailService.send(mailOptions);
+			});
 		});
 	},
 
 	validateToken: function(req, res) {
-		User.findOneByToken(req.param('token'), function(err, user) {
+		async.waterfall([
+			function(done) {
+				User.findOne({
+					token: req.param('token'), 
+					tokenExpires: {$gt: Date.now()}
+				}, function(err, user) {
+					if(err) return done(err);
+					if(!user) return done({message: 'User Not Found!'});
+					done(null, user);
+				});
+			},
+			function(user, done) {
+				user.token = null;
+				user.tokenExpires = null;
+				user.save(function(err, user) {
+					if(err) return done(err);
+					done(null, user);
+				});
+			}
+		], function(err, user) {
 			if(err) return res.serverError();
-			if(!user) return res.status(404).json({message: 'User Not Found!'});
 			res.json(user);
 		});
 	},
