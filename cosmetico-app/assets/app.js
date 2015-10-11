@@ -1,7 +1,14 @@
 (function() {
 	'use strict';
 
-	angular.module('cosmetico', ['ui.bootstrap','ui.utils','ui.router','ngAnimate', 'restangular']);
+	angular.module('cosmetico', [
+		'ui.bootstrap',
+		'ui.utils',
+		'ui.router',
+		'ngAnimate', 
+		'restangular', 
+		'toastr'
+	]);
 
 	// app routing
 	angular.module('cosmetico').config(function($stateProvider, $urlRouterProvider) {
@@ -39,6 +46,17 @@
 	    }
 	  };
 
+	});
+
+	// toastr config
+	angular.module('cosmetico').config(function(toastrConfig) {
+	  angular.extend(toastrConfig, {
+	    autoDismiss: false,
+	    newestOnTop: true,
+	    positionClass: 'toast-top-full-width',
+	    closeButton: true,
+    	closeHtml: '<button>&times;</button>',
+	  });
 	});
 
 })();

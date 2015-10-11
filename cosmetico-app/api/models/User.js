@@ -77,8 +77,7 @@ module.exports = {
       type : 'Please, enter valid email address',
       required: 'Email is required',
       unique: 'Email address is already in use'
-    },
-
+    }
   },
 
 
@@ -102,7 +101,7 @@ module.exports = {
   			require('crypto').randomBytes(48, function(err, buf) {
 					if(err) return done(err);
 				  values.token = buf.toString('base64').replace(/\//g,'_').replace(/\+/g,'-');
-          values.tokenExpires = Date.now() + 3600000; // + 1 hour
+          values.tokenExpires = new Date(Date.now() + 3600000); // + 1 hour
 					done();
 				});
   		}

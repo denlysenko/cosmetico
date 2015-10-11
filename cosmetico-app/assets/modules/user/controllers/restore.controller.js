@@ -4,9 +4,15 @@
 	angular.module('cosmetico')
 			.controller('RestoreController', RestoreController);
 
-	RestoreController.$inject = ['UserRestService', '$stateParams', '$modal'];		
+	RestoreController.$inject = [
+		'UserRestService', 
+		'$stateParams', 
+		'$modal',
+		'NotificationService',
+		'$location'
+	];		
 
-	function RestoreController(UserRestService, $stateParams, $modal) {
+	function RestoreController(UserRestService, $stateParams, $modal, NotificationService, $location) {
 
 		var restore = this;
 		
@@ -23,6 +29,10 @@
 							}
 						}
 					});
-				}, function() {});
+				}, 
+				function(error) {
+					NotificationService.error(error.data.message);
+					$location.path('/');
+				});
 	}		
 })();

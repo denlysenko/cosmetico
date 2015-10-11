@@ -9,11 +9,11 @@
 
 module.exports = {
 
-	signup: function(req, res, next) {
+	signup: function(req, res) {
 		
 		User.create(req.params.all(), function(err, user) {
 			if(err) {
-				return res.serverError();
+				return res.serverError(err);
 			}
 
 			res.json(user);
@@ -22,7 +22,7 @@ module.exports = {
 			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/verify/' + user.token;
 
 			sails.hooks.views.render('emails/verification', {layout: false, user: user}, function(err, html) {
-	       if(err) return next(err);
+	       if(err) return serverError(err);
 
 	      var mailOptions = {
 	       	to: user.email,
@@ -38,57 +38,56 @@ module.exports = {
 	},
 
 	verify: function(req, res, next) {
-		User.findOne({
-			token: req.param('token'), 
-			tokenExpires: {$gt: Date.now()}
-		}, function(err, user) {
+		User.findOneByToken(req.param('token'), function(err, user) {
 
 			if(err) {
-				return res.serverError();
+				return res.serverError(err);
 			}
 
-			if(user) {
-				user.confirmed = true;
-				// reset tokens
-				user.token = null;
-				user.tokenExpires = null;
-
-				user.save(function(err, user) {
-					if(err) return res.serverError();
-					req.session.user = user;
-					res.ok();
-				});
-				
-
-				sails.hooks.views.render('emails/success.verification', {layout: false, user: user}, function(err, html) {
-	       if(err) return next(err);
-
-		      var mailOptions = {
-		       	to: user.email,
-		       	subject: 'Thanks for verification of email',
-		       	template: html
-		      };
-		      
-					// sending email to verify indicated in registration form
-					EmailService.send(mailOptions);	     
-		    });
-			} else {
-				res.status(404).json({message: 'Page Not Found!'})
+			if(!user) return res.notFound('User Not Found!');
+			
+			// check if token has expired
+			if(user.tokenExpires.getTime() < Date.now()) {
+				return res.badRequest('Token has expired! Please, try again');
 			}
+
+			user.confirmed = true;
+			// reset tokens
+			user.token = null;
+			user.tokenExpires = null;
+
+			user.save(function(err, user) {
+				if(err) return res.serverError(err);
+				req.session.user = user;
+				res.ok();
+			});
+
+			sails.hooks.views.render('emails/success.verification', {layout: false, user: user}, function(err, html) {
+       if(err) return serverError(err);
+
+	      var mailOptions = {
+	       	to: user.email,
+	       	subject: 'Thanks for verification of email',
+	       	template: html
+	      };
+	      
+				// sending email to verify indicated in registration form
+				EmailService.send(mailOptions);	     
+	    });
 		});
 	},
 
 	signin: function(req, res) {
-		User.findOneByEmail(req.param('email'), function(err, user) {
-			if(err) return res.json(err);
-			if(!user) return res.status(404).json({message: 'User Not Found!'});
+		User.findOne({email: req.param('email'), confirmed: true}, function(err, user) {
+			if(err) return res.serverError(err);
+			if(!user) return res.notFound('User Not Found!');
 			require('bcrypt').compare(req.param('password'), user.encryptedPassword, function(err, valid) {
-				if(err) return res.serverError();
+				if(err) return res.serverError(err);
 				if(!valid) {
-					res.json({message: 'Incorrect password'})
+					return res.badRequest('Incorrect password');
 				}
 				req.session.user = user;
-				res.ok();
+				res.json(user);
 			});
 		});
 	},
@@ -101,9 +100,9 @@ module.exports = {
 	forgot: function(req, res, next) {
 		async.waterfall([
 			function(done) {
-				User.findOneByEmail(req.param('email'), function(err, user) {
+				User.findOne({email: req.param('email'), confirmed: true}, function(err, user) {
 					if(err) return done(err);
-					if(!user) return done({message: 'User Not Found!'});
+					if(!user) return res.notFound('User Not Found!');
 					done(null, user);
 				});
 			},
@@ -111,18 +110,21 @@ module.exports = {
 				require('crypto').randomBytes(48, function(err, buf) {
 					if(err) return done(err);
 				  user.token = buf.toString('base64').replace(/\//g,'_').replace(/\+/g,'-');
-          user.tokenExpires = Date.now() + 600000; // + 1 hour
-					done(null, user);
+          user.tokenExpires = new Date(Date.now() + 60000); // + 1 hour
+          user.save(function(err) {
+          	if(err) return done(err);
+						done(null, user);
+          });
 				});
 			}
 		], function(err, user) {
-			if(err) return res.serverError();
+			if(err) return res.serverError(err);
 			res.json(user);
 			//creating verification url
 			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/reset/' + user.token;
 
 			sails.hooks.views.render('emails/reset', {layout: false, user: user}, function(err, html) {
-	       if(err) return next(err);
+	       if(err) return serverError(err);
 
 	      var mailOptions = {
 	       	to: user.email,
@@ -139,12 +141,11 @@ module.exports = {
 	validateToken: function(req, res) {
 		async.waterfall([
 			function(done) {
-				User.findOne({
-					token: req.param('token'), 
-					tokenExpires: {$gt: Date.now()}
-				}, function(err, user) {
+				User.findOneByToken(req.param('token'), function(err, user) {
 					if(err) return done(err);
-					if(!user) return done({message: 'User Not Found!'});
+					if(!user) return res.notFound('User Not Found!');
+					// check if token has expired
+					if(user.tokenExpires.getTime() < Date.now()) return res.badRequest('Token has expired! Please, try again');
 					done(null, user);
 				});
 			},
@@ -157,19 +158,19 @@ module.exports = {
 				});
 			}
 		], function(err, user) {
-			if(err) return res.serverError();
+			if(err) return res.serverError(err);
 			res.json(user);
 		});
 	},
 
 	savePassword: function(req, res) {
 		if(req.param('password').length < 6 && req.param('password') !== req.param('confirm')) {
-			return res.status(400).json({message: 'Password is to small or Password doesn\'t match confirmation'});
+			return res.badRequest('Password is to small or Password doesn\'t match confirmation');
 		}
 		
 		User.findOneByEmail(req.param('email'), function(err, user) {
-			if(err) return res.serverError();
-			if(!user) return res.status(404).json({message: 'User Not Found!'});
+			if(err) return res.serverError(err);
+			if(!user) return res.notFound('User Not Found!');
 			req.session.user = user;
 			res.ok();
 		});

@@ -9,10 +9,12 @@
 		'UserRestService',
 		'handleValidationError',
 		'message',
-		'$modal'
+		'$modal',
+		'NotificationService',
+		'$timeout'
 	];
 	
-	function AuthenticationController($modalInstance, UserRestService, handleValidationError, message, $modal) {
+	function AuthenticationController($modalInstance, UserRestService, handleValidationError, message, $modal, NotificationService, $timeout) {
 		var auth = this;
 		
 		auth.credentials = {};
@@ -21,24 +23,31 @@
 		auth.signin = function() {
 			UserRestService.one('signin').post('', auth.credentials)
 					.then(function(user) {
-						location.reload();
-					}, function(error) {});
+						auth.cancel();
+						NotificationService.success('You signed in as ' + user.firstName);
+						$timeout(function() {
+							location.reload();
+						}, 1000);
+					}, function(error) {
+						auth.cancel();
+						NotificationService.error(error.data.message);
+					});
 		};
 
 		auth.signup = function(form) {
 			UserRestService.post(auth.credentials)
 				.then(function(response) {
-					if(response.error && response.error === "E_VALIDATION") {
-						handleValidationError(response.Errors, form, auth);
-					} else {
-						auth.serverErrors = {};
-						auth.cancel();
-						message(response, 'proceedRegistration');
-					}
+					auth.serverErrors = {};
+					auth.cancel();
+					message(response, 'proceedRegistration');
 				},
 				function(error) {
-					console.log(error);
-					auth.cancel();
+					if(error.data.error === "E_VALIDATION") {
+						handleValidationError(error.data.Errors, form, auth);
+					} else {
+						auth.cancel();
+						NotificationService.error(error.data.message);
+					}
 				});
 		};
 
@@ -55,15 +64,14 @@
 			UserRestService.one('forgot')
 				.post('', auth.credentials)
 				.then(function(response) {
-					if(response.error && response.error === "E_VALIDATION") {
-						handleValidationError(response.Errors, form, auth);
-					} else {
-						auth.serverErrors = {};
-						auth.cancel();
-						message(response, 'proceedRestoring');
-					}
+					auth.serverErrors = {};
+					auth.cancel();
+					message(response, 'proceedRestoring');
 				},
-					function() {});
+				function(error) {
+					console.log(error)
+					NotificationService.error(error.data.message);
+				});
 		};
 
 		auth.cancel = function() {
