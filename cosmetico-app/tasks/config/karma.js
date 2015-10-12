@@ -3,17 +3,23 @@ module.exports = function(grunt) {
     karma: {
       options: {
         frameworks: ['jasmine'],
-        files: ['./assets/modules/**/*-spec.js',
-          './assets/bower_components/angular-mocks/angular-mocks.js'
+        basePath: './',
+        files: [
+        	'assets/bower_components/angular/angular.js',
+        	'assets/bower_components/angular-mocks/angular-mocks.js',
+        	'assets/modules/app.js',
+          'assets/modules/**/*.js',
+        	'assets/modules/**/**/*.js' 
         ],
         logLevel:'ERROR',
-        reporters:['mocha'],
         autoWatch: false, //watching is handled by grunt-contrib-watch
         singleRun: true
       },
-      browsers: ['PhantomJS','Chrome','Firefox']
+      all_tests: {
+      	browsers: ['PhantomJS','Chrome','Firefox']
+      }
     }
   });
 
-	grunt.loadNpmTask('grunt-karma');
+	grunt.loadNpmTasks('grunt-karma');
 };
