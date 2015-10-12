@@ -1,3 +1,3 @@
 module.exports = function (grunt) {
-	grunt.registerTask('test', ['grunt-karma']);
+	grunt.registerTask('test', ['karma']);
 };
