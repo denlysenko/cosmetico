@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('cosmetico')
-			.factory('SessionService', SessionService);
+			.service('SessionService', SessionService);
 
 	function SessionService() {
 		var _this = this;

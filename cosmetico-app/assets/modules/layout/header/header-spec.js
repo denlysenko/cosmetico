@@ -1,6 +1,6 @@
 describe('HeaderCtrl', function() {
 
-	beforeEach(module('cosmeticoUi'));
+	beforeEach(module('cosmetico'));
 
 	var scope,ctrl;
 
