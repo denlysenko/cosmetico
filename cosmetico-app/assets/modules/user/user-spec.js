@@ -5,8 +5,10 @@ describe('Message Service', function() {
     expect($modal).toBeDefined();
   }));
 
-  it('should return function', inject(function(message) {
-    expect(typeof message).toBe('function');
+  it('should call $modal.open method when message service was invoked', inject(function(message, $modal) {
+    spyOn($modal, 'open');
+    message();
+    expect($modal.open).toHaveBeenCalled();
   }));
 });
 
