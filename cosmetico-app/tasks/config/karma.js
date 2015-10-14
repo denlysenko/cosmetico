@@ -24,7 +24,7 @@ module.exports = function(grunt) {
         reporter: ['mocha']
       },
       all_tests: {
-      	browsers: ['Chrome', 'Firefox', 'PhantomJS']
+      	browsers: ['PhantomJS']
       }
     }
   });
