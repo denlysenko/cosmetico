@@ -69,7 +69,6 @@
 					message(response, 'proceedRestoring');
 				},
 				function(error) {
-					console.log(error)
 					NotificationService.error(error.data.message);
 				});
 		};
