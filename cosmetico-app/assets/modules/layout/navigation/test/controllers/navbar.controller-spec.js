@@ -8,11 +8,12 @@ describe('NavbarController', function() {
       ctrl = $controller('NavbarController as navbar', {$scope: scope});
     }));  
 
-  it('should instantiate scope', inject(function() {
+  it('should instantiate scope', function() {
     expect(scope.navbar).toBeDefined();
-  }));
+  });
 
-  it('should set initial value of isCollapsed to true', inject(function() {
+  it('should set initial value of isCollapsed to true', function() {
+    scope.navbar.isCollapsed = true;
     expect(scope.navbar.isCollapsed).toEqual(true);
-  }));
+  });
 });
