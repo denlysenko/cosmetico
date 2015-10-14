@@ -16,7 +16,7 @@ module.exports = function(grunt) {
           'assets/bower_components/angular-toastr/dist/angular-toastr.tpls.min.js',
           'assets/app.js',
           'assets/modules/**/*.js',
-          'assets/modules/**/*-spec.js'
+          'assets/modules/test/**/*-spec.js'
         ],
         logLevel:'ERROR',
         autoWatch: false, //watching is handled by grunt-contrib-watch
