@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         logLevel:'ERROR',
         autoWatch: false, //watching is handled by grunt-contrib-watch
         singleRun: true,
-        reporter: ['mocha']
+        reporters: ['mocha']
       },
       all_tests: {
       	browsers: ['PhantomJS']

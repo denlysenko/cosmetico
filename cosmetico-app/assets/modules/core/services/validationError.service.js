@@ -4,17 +4,19 @@
 	'use strict';
 
 	angular.module('cosmetico')
-			.factory('handleValidationError', handleValidationError);
+			.factory('validationError', ValidationError);
 
-	function handleValidationError() {
-		return function(errorsObj, form, scope) {
+	function ValidationError() {
+		return {
+      handle: function(errorsObj, form, scope) {
 
-			for(var field in errorsObj) {
-				form[field].$setValidity('serverError', false);
-				form[field].$setDirty();
-				scope.serverErrors[field] = errorsObj[field];
-			}
-		};
+        for(var field in errorsObj) {
+          form[field].$setValidity('serverError', false);
+          form[field].$setDirty();
+          scope.serverErrors[field] = errorsObj[field];
+        }
+      }
+    }; 
 	}		
 })();
 

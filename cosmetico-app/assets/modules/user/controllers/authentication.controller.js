@@ -7,14 +7,14 @@
 	AuthenticationController.$inject = [
 		'$modalInstance', 
 		'UserRestService',
-		'handleValidationError',
+		'validationError',
 		'message',
 		'$modal',
 		'NotificationService',
 		'$timeout'
 	];
 	
-	function AuthenticationController($modalInstance, UserRestService, handleValidationError, message, $modal, NotificationService, $timeout) {
+	function AuthenticationController($modalInstance, UserRestService, validationError, message, $modal, NotificationService, $timeout) {
 		var auth = this;
 		
 		auth.credentials = {};
@@ -43,7 +43,7 @@
 				},
 				function(error) {
 					if(error.data.error === "E_VALIDATION") {
-						handleValidationError(error.data.Errors, form, auth);
+						validationError.handle(error.data.Errors, form, auth);
 					} else {
 						auth.cancel();
 						NotificationService.error(error.data.message);

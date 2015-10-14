@@ -1,7 +1,7 @@
-describe('handleValidationErrorService', function() {
+describe('ValidationErrorService', function() {
   beforeEach(module('cosmetico'));
 
-  it('should return function', inject(function(handleValidationError) {
-    expect(typeof handleValidationError).toBe('function');
+  it('should have one method', inject(function(validationError) {
+    expect(Object.keys(validationError).length).toEqual(1);
   }));
 });

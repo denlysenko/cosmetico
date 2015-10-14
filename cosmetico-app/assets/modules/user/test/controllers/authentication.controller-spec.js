@@ -6,13 +6,13 @@ describe('AuthenticationController', function() {
     $provide.value('$modalInstance', mockModalInstance);
   }));
 
-  var scope, ctrl, UserRestService, handleValidationError, message, NotificationService, httpBackend, mockUser, $modalInstance, $modal;
+  var scope, ctrl, UserRestService, validationError, message, NotificationService, httpBackend, mockUser, $modalInstance, $modal;
 
-  beforeEach(inject(function($rootScope, $controller, _UserRestService_, _handleValidationError_, _message_, _NotificationService_, _$httpBackend_, _$modal_, _$modalInstance_) {
+  beforeEach(inject(function($rootScope, $controller, _UserRestService_, _validationError_, _message_, _NotificationService_, _$httpBackend_, _$modal_, _$modalInstance_) {
     scope = $rootScope.$new();
     ctrl = $controller('AuthenticationController as auth', {$scope: scope});
     UserRestService = _UserRestService_;
-    handleValidationError = _handleValidationError_;
+    validationError = _validationError_;
     message = _message_;
     NotificationService = _NotificationService_;
     httpBackend = _$httpBackend_;
@@ -128,10 +128,8 @@ describe('AuthenticationController', function() {
       expect(NotificationService.error).toHaveBeenCalled();
     });
 
-    it('should invoke handleValidationError when POST failed with validation error', function() {
-
-      jasmine.createSpy(handleValidationError);
-      
+    it('should invoke validationError.handle() when POST failed with validation error', function() {
+      spyOn(validationError, 'handle');
       var error = {
         data: {
           error: 'E_VALIDATION',
@@ -147,13 +145,12 @@ describe('AuthenticationController', function() {
       };
 
       scope.auth.credentials = mockUser; 
-      scope.auth.form = {};
 
       httpBackend.expectPOST('/user', scope.auth.credentials).respond(400, error);
 
-      scope.auth.signup(scope.auth.form);
+      scope.auth.signup();
       httpBackend.flush();
-      expect(handleValidationError).toHaveBeenCalled();
+      expect(validationError.handle).toHaveBeenCalled();
     });
   });
 
