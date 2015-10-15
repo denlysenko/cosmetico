@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
-  grunt.initConfig({
-    karma: {
+  grunt.config.set('karma', {
       options: {
         frameworks: ['jasmine'],
         basePath: './',
@@ -26,7 +25,6 @@ module.exports = function(grunt) {
       all_tests: {
       	browsers: ['PhantomJS']
       }
-    }
   });
 
 	grunt.loadNpmTasks('grunt-karma');

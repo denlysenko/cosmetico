@@ -6,7 +6,8 @@ describe('NewPasswordController', function() {
       email: 'email@email.com'
     };
     var $window = {
-      location: {}
+      location: {},
+      document: window.document
     };
     $provide.value('email', mockEmailFactory);
     $provide.value('$window', $window);

@@ -1,7 +1,8 @@
 describe('VerificationController', function() {
   beforeEach(module('cosmetico', function($provide) {
     var $window = {
-      location: {}
+      location: {},
+      document: window.document
     };
     $provide.value('$window', $window);
   }));
