@@ -27,6 +27,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" form="contactForm" type="submit">Send Message</button>
+  <button class="btn btn-primary" form="contactForm" type="submit" ng-disabled="contactForm.$pristine || contactForm.$invalid">Send Message</button>
   <button class="btn btn-warning" type="button" ng-click="contact.cancel()">Cancel</button>
 </div>

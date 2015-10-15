@@ -20,6 +20,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" form="loginForm" type="submit">Log In</button>
+  <button class="btn btn-primary" form="loginForm" type="submit" ng-disabled="loginForm.$pristine || loginForm.$invalid">Log In</button>
   <button class="btn btn-warning" type="button" ng-click="auth.cancel()">Cancel</button>
 </div>

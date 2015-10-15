@@ -12,6 +12,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" form="resetPasswordForm" type="submit">Reset Password</button>
+  <button class="btn btn-primary" form="resetPasswordForm" type="submit" ng-disabled="resetPasswordForm.$pristine || resetPasswordForm.$invalid">Reset Password</button>
   <button class="btn btn-warning" type="button" ng-click="auth.cancel()">Cancel</button>
 </div>

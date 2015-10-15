@@ -42,6 +42,6 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" form="registerForm" type="submit">Sign Up</button>
+  <button class="btn btn-primary" form="registerForm" type="submit" ng-disabled="registerForm.$pristine || registerForm.$invalid">Sign Up</button>
   <button class="btn btn-warning" type="button" ng-click="auth.cancel()">Cancel</button>
 </div>
