@@ -8,10 +8,11 @@
 		'UserRestService', 
 		'email', 
 		'NotificationService', 
-		'$timeout'
+		'$timeout',
+    '$window'
 	];
 
-	function NewPasswordController(UserRestService, email, NotificationService, $timeout) {
+	function NewPasswordController(UserRestService, email, NotificationService, $timeout, $window) {
 		var newPassword = this;
 		newPassword.credentials = {};
 		newPassword.credentials.email = email;
@@ -22,7 +23,7 @@
 					.then(function() {
 						NotificationService.success('Your password was saved!');
 						$timeout(function() {
-							location.href = '/';
+							$window.location.href = '/';
 						}, 1000);
 					}, function(error) {
 						NotificationService.error(error.data.message);

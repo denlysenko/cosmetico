@@ -8,14 +8,15 @@
 		'$stateParams', 
 		'UserRestService', 
 		'NotificationService', 
-		'$location'
+		'$location',
+    '$window'
 	];
 	
-	function VerificationController($stateParams, UserRestService, NotificationService, $location) {
+	function VerificationController($stateParams, UserRestService, NotificationService, $location, $window) {
 		UserRestService.one('verify', $stateParams.token)
 				.get()
 				.then(function() {
-					location.href = '/';
+					$window.location.href = '/';
 				}, function(error) {
 					NotificationService.error(error.data.message);
 					$location.path('/');

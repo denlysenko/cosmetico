@@ -1,7 +1,9 @@
 describe('AuthenticationController', function() {
   beforeEach(module('cosmetico', function($provide) {
     var mockModalInstance = {
-      dismiss: function() {}
+      dismiss: function() {
+        return true;
+      }
     };
     $provide.value('$modalInstance', mockModalInstance);
   }));
@@ -10,7 +12,7 @@ describe('AuthenticationController', function() {
 
   beforeEach(inject(function($rootScope, $controller, _UserRestService_, _validationError_, _message_, _NotificationService_, _$httpBackend_, _$modal_, _$modalInstance_) {
     scope = $rootScope.$new();
-    ctrl = $controller('AuthenticationController as auth', {$scope: scope});
+    ctrl = $controller('AuthenticationController as auth', {$scope: scope, NotificationService: _NotificationService_});
     UserRestService = _UserRestService_;
     validationError = _validationError_;
     message = _message_;
@@ -112,14 +114,14 @@ describe('AuthenticationController', function() {
 
       var error = {
         data: {
-          error: 'error',
+          error: 'E_VALIDATION',
           message: 'Error Message'
         }
       };
 
       scope.auth.credentials = mockUser; 
 
-      httpBackend.expectPOST('/user', scope.auth.credentials).respond(400, error);
+      httpBackend.whenPOST('/user', scope.auth.credentials).respond(400, error);
 
       scope.auth.signup();
       httpBackend.flush();
@@ -129,7 +131,7 @@ describe('AuthenticationController', function() {
     });
 
     it('should invoke validationError.handle() when POST failed with validation error', function() {
-      spyOn(validationError, 'handle');
+      spyOn(validationError, 'handle').and.callThrough();
       var error = {
         data: {
           error: 'E_VALIDATION',
@@ -149,6 +151,7 @@ describe('AuthenticationController', function() {
       httpBackend.expectPOST('/user', scope.auth.credentials).respond(400, error);
 
       scope.auth.signup();
+      validationError.handle();
       httpBackend.flush();
       expect(validationError.handle).toHaveBeenCalled();
     });

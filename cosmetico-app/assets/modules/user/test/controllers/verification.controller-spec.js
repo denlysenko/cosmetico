@@ -1,17 +1,22 @@
 describe('VerificationController', function() {
-  beforeEach(module('cosmetico'));
+  beforeEach(module('cosmetico', function($provide) {
+    var $window = {
+      location: {}
+    };
+    $provide.value('$window', $window);
+  }));
 
   var scope,
       ctrl,
       httpBackend, 
       UserRestService,
-      $location;
+      $window;
 
-  beforeEach(inject(function($rootScope, $controller, _$httpBackend_, _UserRestService_, _$location_) {
+  beforeEach(inject(function($rootScope, $controller, _$httpBackend_, _UserRestService_, _$window_) {
     scope = $rootScope.$new();
     httpBackend = _$httpBackend_;
     UserRestService = _UserRestService_;
-    $location = _$location_;
+    $window = _$window_;
     ctrl = $controller('VerificationController', {$scope: scope, UserRestService: UserRestService});
   }));
 
@@ -22,13 +27,11 @@ describe('VerificationController', function() {
 
     expect(UserRestService.one).toHaveBeenCalledWith('verify', mockToken);
 
-    httpBackend.expectGET('/user/verify/qwerty').respond(200);
-
-    scope.$digest();
+    httpBackend.expectGET('/user/verify').respond(200);
+   
     httpBackend.flush();
-
     
-    //expect(location.href).toEqual('/');
+    expect($window.location.href).toEqual('/');
 
   });    
 });

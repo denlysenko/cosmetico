@@ -4,8 +4,12 @@ describe('NewPasswordController', function() {
   beforeEach(module('cosmetico', function($provide) {
     mockEmailFactory = {
       email: 'email@email.com'
-    }
+    };
+    var $window = {
+      location: {}
+    };
     $provide.value('email', mockEmailFactory);
+    $provide.value('$window', $window);
   }));
 
   var scope,
@@ -13,9 +17,11 @@ describe('NewPasswordController', function() {
       NotificationService,
       httpBackend,
       mockEmail,
-      mockData;
+      mockData,
+      $window,
+      $timeout;
 
-  beforeEach(inject(function($rootScope, $controller, _UserRestService_, _NotificationService_, _$httpBackend_, email) {
+  beforeEach(inject(function($rootScope, $controller, _UserRestService_, _NotificationService_, _$httpBackend_, email, _$window_, _$timeout_) {
     scope = $rootScope.$new();
     ctrl = $controller('NewPasswordController as newPassword', {$scope: scope});
     UserRestService = _UserRestService_;
@@ -27,6 +33,8 @@ describe('NewPasswordController', function() {
       password: 'password',
       confirm: 'password'
     };
+    $window = _$window_;
+    $timeout = _$timeout_;
   }));
 
   it('should initialize credentials as an empty object', function() {
@@ -39,7 +47,7 @@ describe('NewPasswordController', function() {
     expect(scope.newPassword.credentials.email).toEqual('email@email.com');
   });
 
-  it('should call NotificationService.success() when POST was successfull', function() {
+  it('should call NotificationService.success() and redirect to Home Page when POST was successfull', function() {
     spyOn(UserRestService, 'one').and.callThrough();
     spyOn(NotificationService, 'success');
 
@@ -51,6 +59,8 @@ describe('NewPasswordController', function() {
     httpBackend.flush();
 
     expect(NotificationService.success).toHaveBeenCalled();
+    $timeout.flush();
+    expect($window.location.href).toEqual('/');
 
   }); 
 
