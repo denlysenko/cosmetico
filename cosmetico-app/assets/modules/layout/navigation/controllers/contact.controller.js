@@ -4,14 +4,23 @@
 	angular.module('cosmetico')
 			.controller('ContactController', ContactController);
 
-	ContactController.$inject = ['$modalInstance'];
+	ContactController.$inject = [
+    '$modalInstance',
+    '$http',
+    'NotificationService'
+  ];
 
-	function ContactController($modalInstance) {
+	function ContactController($modalInstance, $http, NotificationService) {
 		var contact = this;
 		contact.credentials = {};
 
 		contact.submit = function() {
-			console.log(contact.credentials);
+			$http.post('/contact', contact.credentials)
+          .success(function() {
+            contact.cancel();
+            NotificationService.success('Your message was successfully sent!');
+          })
+          .error(function(error) {})
 		};
 
 		contact.cancel = function() {

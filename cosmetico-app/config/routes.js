@@ -51,11 +51,17 @@ module.exports.routes = {
 
   'get /user/signout': 'UserController.signout',
 
+  // restoring password
   'post /user/forgot': 'UserController.forgot',
 
   'get /user/reset/:token': 'UserController.validateToken',
 
-  'post /user/save_password': 'UserController.savePassword'
+  'post /user/save_password': 'UserController.savePassword',
+
+  // sending contact form
+  'post /contact': 'ContactController.send'
+
+
 
   /***************************************************************************
   *                                                                          *
