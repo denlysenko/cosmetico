@@ -19,11 +19,13 @@ module.exports = function validationError(error) {
   res.status(400);
 
   var err = {
-    error: "E_VALIDATION",
-    Errors: {}
+    data: {
+      error: "E_VALIDATION",
+      Errors: {}
+    }
   };
 
-  err.Errors = error;
+  err.data.Errors = error;
   // Send back error message
   res.json(err);
 };

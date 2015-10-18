@@ -16,19 +16,19 @@ module.exports = {
 				return res.serverError(err);
 			}
 
-			res.json(user);
-
 			//creating verification url
 			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/verify/' + user.token;
 
 			sails.hooks.views.render('emails/verification', {layout: false, user: user}, function(err, html) {
-	       if(err) return serverError(err);
+	       if(err) return res.serverError(err);
 
 	      var mailOptions = {
 	       	to: user.email,
 	       	subject: 'Please, verify your email',
 	       	template: html
 	      };
+
+	      res.json(user);
 	      
 				// sending email to verify indicated in registration form
 				EmailService.send(mailOptions);	     
@@ -59,21 +59,21 @@ module.exports = {
 			user.save(function(err, user) {
 				if(err) return res.serverError(err);
 				req.session.user = user;
-				res.ok();
+
+				sails.hooks.views.render('emails/success.verification', {layout: false, user: user}, function(err, html) {
+	       if(err) return res.serverError(err);
+
+		      var mailOptions = {
+		       	to: user.email,
+		       	subject: 'Thanks for verification of email',
+		       	template: html
+		      };
+		      
+		      res.ok();
+					// sending email to verify indicated in registration form
+					EmailService.send(mailOptions);	     
+		    });
 			});
-
-			sails.hooks.views.render('emails/success.verification', {layout: false, user: user}, function(err, html) {
-       if(err) return serverError(err);
-
-	      var mailOptions = {
-	       	to: user.email,
-	       	subject: 'Thanks for verification of email',
-	       	template: html
-	      };
-	      
-				// sending email to verify indicated in registration form
-				EmailService.send(mailOptions);	     
-	    });
 		});
 	},
 
@@ -119,7 +119,6 @@ module.exports = {
 			}
 		], function(err, user) {
 			if(err) return res.serverError(err);
-			res.json(user);
 			//creating verification url
 			user.url = req.protocol + '://' + req.get('host') + '/#' + req.originalUrl + '/reset/' + user.token;
 
@@ -131,6 +130,8 @@ module.exports = {
 	       	subject: 'Please, verify your email',
 	       	template: html
 	      };
+
+				res.json(user);
 	      
 				// sending email to verify indicated in registration form
 				EmailService.send(mailOptions);

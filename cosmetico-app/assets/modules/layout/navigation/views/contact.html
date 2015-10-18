@@ -3,22 +3,25 @@
   <h3 class="modal-title">Contact Us</h3>
 </div>
 <div class="modal-body">
-  <form id="contactForm" name="contactForm" ng-submit="contactForm.$valid && contact.submit()" novalidate>
+  <form id="contactForm" name="contactForm" ng-submit="contact.submit(contactForm)" novalidate>
     <div class="form-group">
       <label for="firstName">First Name</label>
       <p class="text-danger" ng-show="(contactForm.firstName.$dirty || contactForm.$submitted) && contactForm.firstName.$error.required">First Name is Required!</p>
-      <input id="firstName" type="text" placeholder="Enter Your First Name" class="form-control" name="firstName" ng-model="contact.credentials.firstName" required>
+      <p class="text-danger" ng-show="contactForm.firstName.$error.serverError" ng-repeat="error in contact.serverErrors.firstName">{{error.message}}</p>
+      <input id="firstName" type="text" placeholder="Enter Your First Name" class="form-control" name="firstName" ng-model="contact.credentials.firstName" required form-control>
     </div>
     <div class="form-group">
       <label for="lastName">Last Name</label>
       <p class="text-danger" ng-show="(contactForm.lastName.$dirty || contactForm.$submitted) && contactForm.lastName.$error.required">Last Name is Required!</p>
-      <input id="lastName" type="text" placeholder="Enter Your Last Name" class="form-control" name="lastName" ng-model="contact.credentials.lastName" required>
+      <p class="text-danger" ng-show="contactForm.lastName.$error.serverError" ng-repeat="error in contact.serverErrors.lastName">{{error.message}}</p>
+      <input id="lastName" type="text" placeholder="Enter Your Last Name" class="form-control" name="lastName" ng-model="contact.credentials.lastName" required form-control>
     </div>
     <div class="form-group">
       <label for="email">Email</label>
       <p class="text-danger" ng-show="(contactForm.email.$dirty || contactForm.$submitted) && contactForm.email.$error.required">Email is Required!</p>
       <p class="text-danger" ng-show="(contactForm.email.$dirty || contactForm.$submitted) && contactForm.email.$error.email">Please, enter valid email!</p>
-      <input id="email" type="email" placeholder="Enter Your Email" class="form-control" name="email" ng-model="contact.credentials.email" required>
+      <p class="text-danger" ng-show="contactForm.email.$error.serverError" ng-repeat="error in contact.serverErrors.email">{{error.message}}</p>
+      <input id="email" type="email" placeholder="Enter Your Email" class="form-control" name="email" ng-model="contact.credentials.email" required form-control>
     </div>
     <div class="form-group">
       <label for="message">Message</label>
